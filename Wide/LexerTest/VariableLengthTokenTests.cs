@@ -28,7 +28,16 @@ namespace Wide.LexerTest
         [Test]
         public void TestString()
         {
-
+            var lexer = new Lexer();
+            var stringValue = "3DScene";
+            var sampleInput = "\"" + stringValue + "\"";
+            var startPosition = new SourcePosition(1, 0, 0);
+            var results = lexer.Lex(sampleInput, startPosition).ToList();
+            Assert.That(results.Count == 1);
+            Assert.That(results[0].Type == PredefinedTokenTypes.String);
+            Assert.That(results[0].Value == stringValue);
+            Assert.AreEqual(results[0].Location.Begin, startPosition);
+            Assert.AreEqual(results[0].Location.End, sampleInput.Aggregate(startPosition, (pos, character) => pos.Advance(character, lexer.tabsize)));
         }
     }
 }

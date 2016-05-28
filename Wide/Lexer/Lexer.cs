@@ -39,17 +39,14 @@ namespace Wide.Lexical
             string result = "";
             for (int i = 0; i < value.Length; ++i)
             {
-                if (result[i] == '\\' && i + 1 < value.Length)
+                if (value[i] == '\\' && i + 1 < value.Length && Escapes.ContainsKey(value[i + 1]))
                 {
-                    if (Escapes.ContainsKey(value[i + 1]))
-                    {
-                        result += Escapes[value[i + 1]];
-                        ++i;
-                    }
-                    else
-                    {
-                        result += value[i];
-                    }
+                    result += Escapes[value[i + 1]];
+                    ++i;
+                }
+                else
+                {
+                    result += value[i];
                 }
             }
             return result;
@@ -238,7 +235,7 @@ namespace Wide.Lexical
                         var nextChar = state.GetNext();
                         if (nextChar == null)
                         {
-                            yield return new Token<SourceRange>(new SourceRange(next.Begin, state.CurrentPosition), PredefinedTokenTypes.String, stringValue);
+                            yield return new Token<SourceRange>(new SourceRange(next.Begin, state.CurrentPosition), PredefinedTokenTypes.String, Escape(stringValue));
                             yield return new Token<SourceRange>(new SourceRange(state.CurrentPosition, state.CurrentPosition), PredefinedTokenTypes.Error, "Unterminated string literal");
                             yield break;
                         }
