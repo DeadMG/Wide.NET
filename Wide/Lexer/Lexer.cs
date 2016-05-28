@@ -33,25 +33,7 @@ namespace Wide.Lexical
         };
 
         public int tabsize = 4;
-
-        public string Escape(string value)
-        {
-            string result = "";
-            for (int i = 0; i < value.Length; ++i)
-            {
-                if (value[i] == '\\' && i + 1 < value.Length && Escapes.ContainsKey(value[i + 1]))
-                {
-                    result += Escapes[value[i + 1]];
-                    ++i;
-                }
-                else
-                {
-                    result += value[i];
-                }
-            }
-            return result;
-        }
-
+        
         public IEnumerable<IToken<IPositionRange<ISourcePosition>>> ParseComments(ISourcePosition position, LexerState state)
         {
             int num = 1;
@@ -230,21 +212,34 @@ namespace Wide.Lexical
                 if (next.Character == '"')
                 {
                     var stringValue = "";
+                    var wasPreviousCharacterSlash = false;
                     while (true)
                     {
                         var nextChar = state.GetNext();
                         if (nextChar == null)
                         {
-                            yield return new Token<SourceRange>(new SourceRange(next.Begin, state.CurrentPosition), PredefinedTokenTypes.String, Escape(stringValue));
+                            yield return new Token<SourceRange>(new SourceRange(next.Begin, state.CurrentPosition), PredefinedTokenTypes.String, stringValue);
                             yield return new Token<SourceRange>(new SourceRange(state.CurrentPosition, state.CurrentPosition), PredefinedTokenTypes.Error, "Unterminated string literal");
                             yield break;
                         }
-                        if (nextChar.Character == '"')
+                        if (!wasPreviousCharacterSlash && nextChar.Character == '"')
                         {
-                            yield return new Token<SourceRange>(new SourceRange(next.Begin, state.CurrentPosition), PredefinedTokenTypes.String, Escape(stringValue));
+                            yield return new Token<SourceRange>(new SourceRange(next.Begin, state.CurrentPosition), PredefinedTokenTypes.String, stringValue);
                             break;
                         }
-                        stringValue += nextChar.Character;
+                        var effectiveCharacter = nextChar.Character.ToString();
+                        if (wasPreviousCharacterSlash)
+                        {
+                            if (Escapes.ContainsKey(nextChar.Character))
+                            {
+                                // Remove the last slash.
+                                stringValue = stringValue.Remove(stringValue.Length - 1, 1);
+                                effectiveCharacter = Escapes[nextChar.Character];
+                                wasPreviousCharacterSlash = false;
+                            }
+                        }
+                        stringValue += effectiveCharacter;
+                        wasPreviousCharacterSlash = !wasPreviousCharacterSlash && nextChar.Character == '\\';
                     }
                     continue;
                 }
