@@ -32,7 +32,5 @@ namespace Wide.LexerTest
         }
 
         public IEnumerable<ITokenType> PredefinedFixedTokens => new Lexer().FixedTokens.Values.ToList();
-
-
     }
 }

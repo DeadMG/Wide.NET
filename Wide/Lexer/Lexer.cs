@@ -153,7 +153,10 @@ namespace Wide.Lexical
 
             var potentialNext = existing + next.Character;
             if (!FixedTokens.Any(p => p.Key.StartsWith(potentialNext)))
+            {
+                state.Putback(next);
                 return null;
+            }
 
             var tryGreedy = TryLexFixedToken(start, potentialNext, state);
             if (tryGreedy != null)
@@ -265,7 +268,7 @@ namespace Wide.Lexical
                     }
                 }
 
-                var value = "";
+                var value = next.Character.ToString();
                 while (true)
                 {
                     var nextChar = state.GetNext();

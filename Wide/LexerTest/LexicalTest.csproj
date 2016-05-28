@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="FixedTokensTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VariableLengthTokenTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lexer\Lexical.csproj">
