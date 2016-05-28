@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Wide.Lexical
 {
-    public interface IPositionRange<out T> : IRange
+    public interface ISourceRange
     {
-        T Begin { get; }
-        T End { get; }
+        ISourcePosition Begin { get; }
+        ISourcePosition End { get; }
     }
 }

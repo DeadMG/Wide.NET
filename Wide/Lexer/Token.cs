@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace Wide.Lexical
 {
-    public class Token<T> : IToken<T>
+    public class Token : IToken
     {
-        public Token(T loc, ITokenType type, string value)
+        public Token(ISourceRange loc, ITokenType type, string value)
         {
             Location = loc;
             Type = type;
             Value = value;
         }
 
-        public T Location { get; private set; }
+        public ISourceRange Location { get; private set; }
         public ITokenType Type { get; private set; }
         public string Value { get; private set; }
     }

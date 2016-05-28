@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Wide.Lexical
 {
-    public class SourceRange : IPositionRange<ISourcePosition>
+    public class SourceRange : ISourceRange
     {
         public SourceRange(ISourcePosition begin, ISourcePosition end)
         {

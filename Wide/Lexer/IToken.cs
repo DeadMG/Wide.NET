@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Wide.Lexical
 {
-    public interface IToken<out T>
+    public interface IToken
     {
-        T Location { get; }
+        ISourceRange Location { get; }
         string Value { get; }
         ITokenType Type { get; }
     }
