@@ -16,8 +16,8 @@ namespace Wide.Lexical
                 FixedSource = isFixed ? name : null;
             }
 
-            public string Name { get; private set; }
-            public string FixedSource { get; private set; }
+            public string Name { get; }
+            public string FixedSource { get; }
         }
 
         public static readonly ITokenType OpenBracket = new PredefinedTokenType("(");

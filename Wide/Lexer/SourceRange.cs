@@ -13,7 +13,8 @@ namespace Wide.Lexical
             Begin = begin;
             End = end;
         }
-        public ISourcePosition Begin { get; private set; }
-        public ISourcePosition End { get; private set; }
+
+        public ISourcePosition Begin { get; }
+        public ISourcePosition End { get; }
     }
 }

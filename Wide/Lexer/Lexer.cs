@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Wide.Util;
 
 namespace Wide.Lexical
 {
@@ -34,14 +35,16 @@ namespace Wide.Lexical
 
         public int tabsize = 4;
         
-        public IEnumerable<IToken> ParseComments(ISourcePosition position, LexerState state)
+        public IEnumerable<IToken> ParseComments(ISourcePosition position, PutbackRange<InputCharacter> state)
         {
             int num = 1;
             var comment = "";
+            var end = position;
             while (true)
             {
                 var next = state.GetNext();
                 if (next == null) break;
+                end = next.End;
                 if (next.Character == '*')
                 {
                     next = state.GetNext();
@@ -61,72 +64,33 @@ namespace Wide.Lexical
                         ++num;
                 }
             }
-            yield return new Token(new SourceRange(position, state.CurrentPosition), PredefinedTokenTypes.Comment, comment);
+            yield return new Token(new SourceRange(position, end), PredefinedTokenTypes.Comment, comment);
             if (num != 0)
             {
-                yield return new Token(new SourceRange(state.CurrentPosition, state.CurrentPosition), PredefinedTokenTypes.Error, "Unterminated comment");
+                yield return new Token(new SourceRange(end, end), PredefinedTokenTypes.Error, "Unterminated comment");
             }
         }
 
         public class InputCharacter
         {
-            public char Character;
-            public ISourcePosition Begin;
-            public ISourcePosition End;
+            public InputCharacter(char c, ISourcePosition begin, ISourcePosition end)
+            {
+                Character = c;
+                Begin = begin;
+                End = end;
+            }
+            public char Character { get; }
+            public ISourcePosition Begin { get; }
+            public ISourcePosition End { get; }
         }
-
-        public class LexerState
-        {
-            private List<InputCharacter> putback = new List<InputCharacter>();
-            private IEnumerator<char> currentCharacter;
-            private int tabsize;
-
-            public ISourcePosition CurrentPosition { get; private set; }
-
-            public LexerState(IEnumerator<char> characterEnumerator, ISourcePosition initialPosition, int tabsize)
-            {
-                CurrentPosition = initialPosition;
-                currentCharacter = characterEnumerator;
-                this.tabsize = tabsize;
-            }
-
-            public void Putback(InputCharacter character)
-            {
-                if (character == null) return;
-                putback.Add(character);
-            }
-
-            public InputCharacter GetNext()
-            {
-                if (putback.Any())
-                {
-                    var last = putback.Last();
-                    putback.RemoveAt(putback.Count - 1);
-                    return last;
-                }
-                if (currentCharacter.MoveNext())
-                {
-                    var next = currentCharacter.Current;
-                    var begin = CurrentPosition;
-                    CurrentPosition = CurrentPosition.Advance(next, tabsize);
-                    return new InputCharacter
-                    {
-                        Character = next,
-                        Begin = begin,
-                        End = CurrentPosition
-                    };
-                }
-                return null;
-            }
-        }
-
-        private IToken TryLexFixedToken(ISourcePosition start, string existing, LexerState state)
+        
+        private IToken TryLexFixedToken(ISourcePosition start, ISourcePosition end, string existing, PutbackRange<InputCharacter> state)
         {
             var next = state.GetNext();
             if (next == null)
             {
                 if (FixedTokens.ContainsKey(existing))
-                    return new Token(new SourceRange(start, state.CurrentPosition), FixedTokens[existing], existing);
+                    return new Token(new SourceRange(start, end), FixedTokens[existing], existing);
                 return null;
             }
 
@@ -137,7 +101,7 @@ namespace Wide.Lexical
                 return null;
             }
 
-            var tryGreedy = TryLexFixedToken(start, potentialNext, state);
+            var tryGreedy = TryLexFixedToken(start, next.End, potentialNext, state);
             if (tryGreedy != null)
                 return tryGreedy;
             
@@ -151,7 +115,7 @@ namespace Wide.Lexical
 
         public IEnumerable<IToken> Lex(IEnumerable<char> input, ISourcePosition initialPosition)
         {
-            var state = new LexerState(input.GetEnumerator(), initialPosition, tabsize);
+            var state = new PutbackRange<InputCharacter>(input.SelectAggregate(initialPosition, (character, currentPos) => currentPos.Advance(character, tabsize), (character, begin, end) => new InputCharacter(character, begin, end)));
 
             while (true)
             {
@@ -174,17 +138,19 @@ namespace Wide.Lexical
                     else if (possibleComment?.Character == '/')
                     {
                         var comment = "";
+                        var end = possibleComment.End;
                         while (true)
                         {
                             var possibleTerminator = state.GetNext();
                             if (possibleTerminator == null)
                             {
-                                yield return new Token(new SourceRange(next.Begin, state.CurrentPosition), PredefinedTokenTypes.Comment, comment);
+                                yield return new Token(new SourceRange(next.Begin, end), PredefinedTokenTypes.Comment, comment);
                                 yield break;
                             }
+                            end = possibleTerminator.End;
                             if (possibleTerminator.Character == '\n')
                             {
-                                yield return new Token(new SourceRange(next.Begin, state.CurrentPosition), PredefinedTokenTypes.Comment, comment);
+                                yield return new Token(new SourceRange(next.Begin, end), PredefinedTokenTypes.Comment, comment);
                                 break;
                             }
                             comment += possibleTerminator.Character;
@@ -197,7 +163,7 @@ namespace Wide.Lexical
                     }
                 }
                 
-                var token = TryLexFixedToken(next.Begin, next.Character.ToString(), state);
+                var token = TryLexFixedToken(next.Begin, next.End, next.Character.ToString(), state);
                 if (token != null)
                 {
                     yield return token;
@@ -205,7 +171,7 @@ namespace Wide.Lexical
                 }
                 if (FixedTokens.ContainsKey(next.Character.ToString()))
                 {
-                    yield return new Token(new SourceRange(next.Begin, state.CurrentPosition), FixedTokens[next.Character.ToString()], next.Character.ToString());
+                    yield return new Token(new SourceRange(next.Begin, next.End), FixedTokens[next.Character.ToString()], next.Character.ToString());
                     continue;
                 }
 
@@ -213,18 +179,20 @@ namespace Wide.Lexical
                 {
                     var stringValue = "";
                     var wasPreviousCharacterSlash = false;
+                    var end = next.End;
                     while (true)
                     {
                         var nextChar = state.GetNext();
                         if (nextChar == null)
                         {
-                            yield return new Token(new SourceRange(next.Begin, state.CurrentPosition), PredefinedTokenTypes.String, stringValue);
-                            yield return new Token(new SourceRange(state.CurrentPosition, state.CurrentPosition), PredefinedTokenTypes.Error, "Unterminated string literal");
+                            yield return new Token(new SourceRange(next.Begin, end), PredefinedTokenTypes.String, stringValue);
+                            yield return new Token(new SourceRange(end, end), PredefinedTokenTypes.Error, "Unterminated string literal");
                             yield break;
                         }
+                        end = nextChar.End;
                         if (!wasPreviousCharacterSlash && nextChar.Character == '"')
                         {
-                            yield return new Token(new SourceRange(next.Begin, state.CurrentPosition), PredefinedTokenTypes.String, stringValue);
+                            yield return new Token(new SourceRange(next.Begin, nextChar.End), PredefinedTokenTypes.String, stringValue);
                             break;
                         }
                         var effectiveCharacter = nextChar.Character.ToString();
@@ -261,12 +229,13 @@ namespace Wide.Lexical
                 }
 
                 var value = next.Character.ToString();
+                var lastEnd = next.End;
                 while (true)
                 {
                     var nextChar = state.GetNext();
                     if (nextChar == null)
                     {
-                        yield return new Token(new SourceRange(startPosition, state.CurrentPosition), type, value);
+                        yield return new Token(new SourceRange(startPosition, lastEnd), type, value);
                         yield break;
                     }
                     if (!Char.IsLetterOrDigit(nextChar.Character))
@@ -274,8 +243,9 @@ namespace Wide.Lexical
                     if (Char.IsLetter(nextChar.Character))
                         type = PredefinedTokenTypes.Identifier;
                     value += nextChar.Character;
+                    lastEnd = nextChar.End;
                 }
-                yield return new Token(new SourceRange(startPosition, state.CurrentPosition), type, value);
+                yield return new Token(new SourceRange(startPosition, lastEnd), type, value);
             }
         }        
     }

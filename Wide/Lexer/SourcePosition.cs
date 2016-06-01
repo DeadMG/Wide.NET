@@ -33,9 +33,9 @@ namespace Wide.Lexical
             return Advance(c, tabsize);
         }
 
-        public int Line { get; private set; }
-        public int Column { get; private set; }
-        public int Offset { get; private set; }
+        public int Line { get; }
+        public int Column { get; }
+        public int Offset { get; }
 
         public override string ToString()
         {
