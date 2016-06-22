@@ -13,6 +13,9 @@ namespace Wide.Util
 
         public static bool DeepEqual<T>(T obj1, T obj2)
         {
+            if (obj1.GetType() != obj2.GetType())
+                return false;
+
             if (Object.ReferenceEquals(obj1, obj2))
                 return true;
 

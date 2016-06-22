@@ -53,6 +53,10 @@
       <Project>{433859bc-1ead-4f02-b81a-4e80a5159e7f}</Project>
       <Name>Lexical</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Util\Util.csproj">
+      <Project>{3AA9A56B-6273-41FF-B32D-B9F7AF5A67BF}</Project>
+      <Name>Util</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
