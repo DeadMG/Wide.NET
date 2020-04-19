@@ -1,10 +1,11 @@
 ﻿using Wide.Lex;
+using Wide.Parse.AST.Statements;
 
 namespace Wide.Parse.AST.Expressions
 {
     public class BinaryExpression : IExpression
     {
-        public BinaryExpression(ISourceRange location, IExpression left, IExpression right, ITokenType type)
+        public BinaryExpression(IASTLocation location, IExpression left, IExpression right, ITokenType type)
         {
             Location = location;
             Left = left;
@@ -12,7 +13,7 @@ namespace Wide.Parse.AST.Expressions
             Type = type;
         }
 
-        public ISourceRange Location { get; }
+        public IASTLocation Location { get; }
         public IExpression Left { get; }
         public IExpression Right { get; }
         public ITokenType Type { get; }

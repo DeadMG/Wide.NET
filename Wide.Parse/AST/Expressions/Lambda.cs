@@ -13,7 +13,7 @@ namespace Wide.Parse.AST.Expressions
             ByReference
         }
 
-        public Lambda(ISourceRange location, IEnumerable<FunctionArgument> args, IEnumerable<IStatement> body, IEnumerable<Variable> captures, CaptureMode defaultref)
+        public Lambda(IASTLocation location, IEnumerable<FunctionArgument> args, IEnumerable<IStatement> body, IEnumerable<Variable> captures, CaptureMode defaultref)
         {
             Location = location;
             Arguments = args;
@@ -26,6 +26,6 @@ namespace Wide.Parse.AST.Expressions
         public IEnumerable<Variable> Captures { get; }
         public IEnumerable<FunctionArgument> Arguments { get; }
         public IEnumerable<IStatement> Body { get; }
-        public ISourceRange Location { get; }
+        public IASTLocation Location { get; }
     }
 }

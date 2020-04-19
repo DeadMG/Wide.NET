@@ -2,7 +2,7 @@
 {
     public interface IToken
     {
-        ISourceRange Location { get; }
+        ITokenLocation Location { get; }
         string Value { get; }
         ITokenType Type { get; }
     }

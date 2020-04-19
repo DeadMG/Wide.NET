@@ -1,14 +1,15 @@
 ﻿using Wide.Lex;
+using Wide.Parse.AST.Statements;
 
 namespace Wide.Parse.AST.Expressions
 {
     public class False : IExpression
     {
-        public False(ISourceRange loc)
+        public False(IASTLocation loc)
         {
             Location = loc;
         }
 
-        public ISourceRange Location { get; }
+        public IASTLocation Location { get; }
     }
 }

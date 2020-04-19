@@ -1,21 +1,21 @@
-﻿using Wide.Lex;
+﻿using Wide.Parse.AST.Expressions;
 
 namespace Wide.Parse.AST.Statements
 {
     public class Throw : IStatement
     {
-        public Throw(ISourceRange where)
+        public Throw(IASTLocation where)
         {
             Location = where;
         }
 
-        public Throw(ISourceRange where, IExpression what)
+        public Throw(IASTLocation where, IExpression what)
             : this(where)
         {
             Exception = what;
         }
 
-        public ISourceRange Location { get; }
+        public IASTLocation Location { get; }
         public IExpression Exception { get; }
     }
 }

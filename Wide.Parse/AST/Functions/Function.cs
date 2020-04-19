@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using Wide.Lex;
+using Wide.Parse.AST.Expressions;
+using Wide.Parse.AST.Statements;
 
 namespace Wide.Parse.AST.Functions
 {
     public class Function : IDynamicFunction, IDefaultedFunction, IAbstractFunction, IAttributeFunction
     {
         public Function(
-            ISourceRange location,
+            IASTLocation location,
             IEnumerable<FunctionArgument> arguments, 
             IEnumerable<IStatement> body,
             IEnumerable<Attribute> attributes,
@@ -25,7 +27,7 @@ namespace Wide.Parse.AST.Functions
             Dynamic = dynamic;
         }
 
-        public ISourceRange Location { get; }
+        public IASTLocation Location { get; }
         public IEnumerable<FunctionArgument> Arguments { get; }
         public IEnumerable<IStatement> Body { get; }
         public IEnumerable<Attribute> Attributes { get; }

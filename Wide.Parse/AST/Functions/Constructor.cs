@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using Wide.Lex;
+using Wide.Parse.AST.Statements;
 
 namespace Wide.Parse.AST.Functions
 {
     public class Constructor : IAttributeFunction, IDefaultedFunction
     {
-        public Constructor(ISourceRange location, IEnumerable<FunctionArgument> args, IEnumerable<Attribute> attributes, IEnumerable<IStatement> body, bool defaulted)
+        public Constructor(IASTLocation location, IEnumerable<FunctionArgument> args, IEnumerable<Attribute> attributes, IEnumerable<IStatement> body, bool defaulted)
         {
             Location = location;
             Arguments = args;
@@ -18,6 +19,6 @@ namespace Wide.Parse.AST.Functions
         public IEnumerable<Attribute> Attributes { get; }
         public IEnumerable<IStatement> Body { get; }
         public bool Defaulted { get; }
-        public ISourceRange Location { get; }
+        public IASTLocation Location { get; }
     }
 }

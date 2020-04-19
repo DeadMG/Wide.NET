@@ -1,17 +1,17 @@
-﻿using Wide.Lex;
+﻿using Wide.Parse.AST.Expressions;
 
 namespace Wide.Parse.AST
 {
     public class Attribute
     {
-        public Attribute(ISourceRange location, IExpression initializer, IExpression initialized)
+        public Attribute(IASTLocation location, IExpression initializer, IExpression initialized)
         {
             Location = location;
             Initializer = initializer;
             Initialized = initialized;
         }
 
-        public ISourceRange Location { get; }
+        public IASTLocation Location { get; }
         public IExpression Initializer { get; }
         public IExpression Initialized { get; }
     }

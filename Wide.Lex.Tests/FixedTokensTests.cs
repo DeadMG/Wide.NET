@@ -17,9 +17,9 @@ namespace Wide.Lex.Tests
         [Test]
         public void CheckCanLexFixedTokens(ITokenType tokenType)
         {
-            var startPosition = new SourcePosition(1, 0, 0);
+            var startPosition = new SourcePosition("test", 1, 0, 0);
             var lexer = new Lex.Lexer();
-            var results = lexer.Lex(tokenType.FixedSource, new SourcePosition(1, 0, 0)).ToList();
+            var results = lexer.Lex(tokenType.FixedSource, new SourcePosition("test", 1, 0, 0)).ToList();
             Assert.That(results.Count == 1);
             Assert.That(results[0].Type == tokenType);
             Assert.That(results[0].Value == tokenType.FixedSource);

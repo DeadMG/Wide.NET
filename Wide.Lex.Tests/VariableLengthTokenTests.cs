@@ -11,7 +11,7 @@ namespace Wide.Lex.Tests
         {
             var lexer = new Lexer();
             var sampleInput = "3DScene";
-            var startPosition = new SourcePosition(1, 0, 0);
+            var startPosition = new SourcePosition("test", 1, 0, 0);
             var results = lexer.Lex(sampleInput, startPosition).ToList();
             Assert.That(results.Count == 1);
             Assert.That(results[0].Type == PredefinedTokenTypes.Identifier);
@@ -26,7 +26,7 @@ namespace Wide.Lex.Tests
             var lexer = new Lexer();
             var stringValue = "3DScene";
             var sampleInput = "\"" + stringValue + "\"";
-            var startPosition = new SourcePosition(1, 0, 0);
+            var startPosition = new SourcePosition("test", 1, 0, 0);
             var results = lexer.Lex(sampleInput, startPosition).ToList();
             Assert.That(results.Count == 1);
             Assert.That(results[0].Type == PredefinedTokenTypes.String);
@@ -41,7 +41,7 @@ namespace Wide.Lex.Tests
             var lexer = new Lexer();
             var stringValue = "\\r\\n\\t\\\"";
             var sampleInput = "\"" + stringValue + "\"";
-            var startPosition = new SourcePosition(1, 0, 0);
+            var startPosition = new SourcePosition("test", 1, 0, 0);
             var results = lexer.Lex(sampleInput, startPosition).ToList();
             Assert.That(results.Count == 1);
             Assert.That(results[0].Type == PredefinedTokenTypes.String);
@@ -55,7 +55,7 @@ namespace Wide.Lex.Tests
         {
             var lexer = new Lexer();
             var sampleInput = "11111";
-            var startPosition = new SourcePosition(1, 0, 0);
+            var startPosition = new SourcePosition("test", 1, 0, 0);
             var results = lexer.Lex(sampleInput, startPosition).ToList();
             Assert.That(results.Count == 1);
             Assert.That(results[0].Type == PredefinedTokenTypes.Integer);

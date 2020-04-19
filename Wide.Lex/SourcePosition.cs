@@ -1,9 +1,12 @@
-﻿namespace Wide.Lex
+﻿using System;
+
+namespace Wide.Lex
 {
-    public class SourcePosition : ISourcePosition
+    public class SourcePosition
     {
-        public SourcePosition(int line, int column, int offset)
+        public SourcePosition(string source, int line, int column, int offset)
         {
+            Source = source;
             Line = line;
             Column = column;
             Offset = offset;
@@ -13,28 +16,19 @@
         {
             if (c == '\n')
             {
-                return new SourcePosition(Line + 1, 0, Offset + 1);
+                return new SourcePosition(Source, Line + 1, 0, Offset + 1);
             }
             if (c == '\t')
             {
-                return new SourcePosition(Line, Column + tabsize, Offset + 1);
+                return new SourcePosition(Source, Line, Column + tabsize, Offset + 1);
             }
-            return new SourcePosition(Line, Column + 1, Offset + 1);
-        }
-
-        ISourcePosition ISourcePosition.Advance(char c, int tabsize)
-        {
-            return Advance(c, tabsize);
+            return new SourcePosition(Source, Line, Column + 1, Offset + 1);
         }
 
         public int Line { get; }
         public int Column { get; }
         public int Offset { get; }
-
-        public override string ToString()
-        {
-            return Line + ":" + Column;
-        }
+        public string Source { get; }
 
         public override bool Equals(object obj)
         {
@@ -45,7 +39,9 @@
 
         public override int GetHashCode()
         {
-            return ToString().GetHashCode();
+            return Description.GetHashCode();
         }
+
+        public string Description => String.Join(":", Source, Line.ToString(), Column.ToString());
     }
 }

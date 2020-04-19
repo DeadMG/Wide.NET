@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using Wide.Lex;
+using Wide.Parse.AST.Statements;
 
 namespace Wide.Parse.AST.Functions
 {
     public class Destructor : IFunction, IDefaultedFunction, IAttributeFunction, IDynamicFunction
     {
-        public Destructor(IEnumerable<FunctionArgument> arguments, IEnumerable<Attribute> attributes, IEnumerable<IStatement> body, bool defaulted, bool dynamic, ISourceRange location)
+        public Destructor(IEnumerable<FunctionArgument> arguments, IEnumerable<Attribute> attributes, IEnumerable<IStatement> body, bool defaulted, bool dynamic, IASTLocation location)
         {
             Arguments = arguments;
             Attributes = attributes;
@@ -20,6 +21,6 @@ namespace Wide.Parse.AST.Functions
         public IEnumerable<IStatement> Body { get; }
         public bool Defaulted { get; }
         public bool Dynamic { get; }
-        public ISourceRange Location { get; }
+        public IASTLocation Location { get; }
     }
 }

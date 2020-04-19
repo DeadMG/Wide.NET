@@ -11,16 +11,18 @@ namespace Wide.Parse
 {
     public class Parser
     {
-        public Dictionary<ITokenType, Func<Parser, Import, Token, IExpression>> PrimaryExpressions = new Dictionary<ITokenType, Func<Parser, Import, Token, IExpression>>
+        public Dictionary<ITokenType, Func<Parser, Import, IToken, IExpression>> PrimaryExpressions = new Dictionary<ITokenType, Func<Parser, Import, IToken, IExpression>>
         {
-            { PredefinedTokenTypes.This, (parser, import, token) => new This(token.Location) },
-            { PredefinedTokenTypes.String, (parser, import, token) => new String(token.Value, token.Location) },
-            { PredefinedTokenTypes.Integer, (parser, import, token) => new Integer(token.Location, token.Value) },
-            { PredefinedTokenTypes.True, (parser, import, token) => new True(token.Location) },
-            { PredefinedTokenTypes.False, (parser, import, token) => new False(token.Location) }
+            { PredefinedTokenTypes.This, (parser, import, token) => new This(new TokenASTLocation(token.Location)) },
+            { PredefinedTokenTypes.String, (parser, import, token) => new String(token.Value, new TokenASTLocation(token.Location)) },
+            { PredefinedTokenTypes.Integer, (parser, import, token) => new Integer(new TokenASTLocation(token.Location), token.Value) },
+            { PredefinedTokenTypes.True, (parser, import, token) => new True(new TokenASTLocation(token.Location)) },
+            { PredefinedTokenTypes.False, (parser, import, token) => new False(new TokenASTLocation(token.Location)) }
         };
 
-        public Token Expect(PutbackRange<Token> tokens, IEnumerable<ITokenType> permitted)
+        public ITokenLocationMerger TokenLocationMerger { get; set; } = new DefaultTokenLocationMerger();
+
+        public IToken Expect(PutbackRange<IToken> tokens, IEnumerable<ITokenType> permitted)
         {
             var set = new HashSet<ITokenType>(permitted);
             var next = tokens.GetNext();
@@ -31,15 +33,15 @@ namespace Wide.Parse
             return next; 
         }
 
-        public IExpression ParseExpression(PutbackRange<Token> tokens, Import import)
+        public IExpression ParseExpression(PutbackRange<IToken> tokens, Import import)
         {
             var next = Expect(tokens, PrimaryExpressions.Keys);
             return PrimaryExpressions[next.Type](this, import, next);
         }
 
-        public PutbackRange<Token> PutbackRangeFromTokens(IEnumerable<Token> inputTokens)
+        public PutbackRange<IToken> PutbackRangeFromTokens(IEnumerable<IToken> inputTokens)
         {
-            return new PutbackRange<Token>(inputTokens.Where(t => t.Type != PredefinedTokenTypes.Comment && t.Type != PredefinedTokenTypes.Error));
+            return new PutbackRange<IToken>(inputTokens.Where(t => t.Type != PredefinedTokenTypes.Comment && t.Type != PredefinedTokenTypes.Error));
         }
     }
 }

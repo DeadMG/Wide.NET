@@ -33,7 +33,7 @@ namespace Wide.Lex
 
         public int tabsize = 4;
         
-        public IEnumerable<IToken> ParseComments(ISourcePosition position, PutbackRange<InputCharacter> state)
+        public IEnumerable<LexedToken> ParseComments(SourcePosition position, PutbackRange<InputCharacter> state)
         {
             int num = 1;
             var comment = "";
@@ -62,33 +62,33 @@ namespace Wide.Lex
                         ++num;
                 }
             }
-            yield return new Token(new SourceRange(position, end), PredefinedTokenTypes.Comment, comment);
+            yield return new LexedToken(new SourceRange(position, end), PredefinedTokenTypes.Comment, comment);
             if (num != 0)
             {
-                yield return new Token(new SourceRange(end, end), PredefinedTokenTypes.Error, "Unterminated comment");
+                yield return new LexedToken(new SourceRange(end, end), PredefinedTokenTypes.Error, "Unterminated comment");
             }
         }
 
         public class InputCharacter
         {
-            public InputCharacter(char c, ISourcePosition begin, ISourcePosition end)
+            public InputCharacter(char c, SourcePosition begin, SourcePosition end)
             {
                 Character = c;
                 Begin = begin;
                 End = end;
             }
             public char Character { get; }
-            public ISourcePosition Begin { get; }
-            public ISourcePosition End { get; }
+            public SourcePosition Begin { get; }
+            public SourcePosition End { get; }
         }
         
-        private IToken TryLexFixedToken(ISourcePosition start, ISourcePosition end, string existing, PutbackRange<InputCharacter> state)
+        private LexedToken TryLexFixedToken(SourcePosition start, SourcePosition end, string existing, PutbackRange<InputCharacter> state)
         {
             var next = state.GetNext();
             if (next == null)
             {
                 if (FixedTokens.ContainsKey(existing))
-                    return new Token(new SourceRange(start, end), FixedTokens[existing], existing);
+                    return new LexedToken(new SourceRange(start, end), FixedTokens[existing], existing);
                 return null;
             }
 
@@ -106,12 +106,12 @@ namespace Wide.Lex
             state.Putback(next);
 
             if (FixedTokens.ContainsKey(existing))
-                return new Token(new SourceRange(start, next.End), FixedTokens[existing], existing);
+                return new LexedToken(new SourceRange(start, next.End), FixedTokens[existing], existing);
 
             return null;
         }
 
-        public IEnumerable<IToken> Lex(IEnumerable<char> input, ISourcePosition initialPosition)
+        public IEnumerable<LexedToken> Lex(IEnumerable<char> input, SourcePosition initialPosition)
         {
             var state = new PutbackRange<InputCharacter>(input.SelectAggregate(initialPosition, (character, currentPos) => currentPos.Advance(character, tabsize), (character, begin, end) => new InputCharacter(character, begin, end)));
 
@@ -142,13 +142,13 @@ namespace Wide.Lex
                             var possibleTerminator = state.GetNext();
                             if (possibleTerminator == null)
                             {
-                                yield return new Token(new SourceRange(next.Begin, end), PredefinedTokenTypes.Comment, comment);
+                                yield return new LexedToken(new SourceRange(next.Begin, end), PredefinedTokenTypes.Comment, comment);
                                 yield break;
                             }
                             end = possibleTerminator.End;
                             if (possibleTerminator.Character == '\n')
                             {
-                                yield return new Token(new SourceRange(next.Begin, end), PredefinedTokenTypes.Comment, comment);
+                                yield return new LexedToken(new SourceRange(next.Begin, end), PredefinedTokenTypes.Comment, comment);
                                 break;
                             }
                             comment += possibleTerminator.Character;
@@ -169,7 +169,7 @@ namespace Wide.Lex
                 }
                 if (FixedTokens.ContainsKey(next.Character.ToString()))
                 {
-                    yield return new Token(new SourceRange(next.Begin, next.End), FixedTokens[next.Character.ToString()], next.Character.ToString());
+                    yield return new LexedToken(new SourceRange(next.Begin, next.End), FixedTokens[next.Character.ToString()], next.Character.ToString());
                     continue;
                 }
 
@@ -183,14 +183,14 @@ namespace Wide.Lex
                         var nextChar = state.GetNext();
                         if (nextChar == null)
                         {
-                            yield return new Token(new SourceRange(next.Begin, end), PredefinedTokenTypes.String, stringValue);
-                            yield return new Token(new SourceRange(end, end), PredefinedTokenTypes.Error, "Unterminated string literal");
+                            yield return new LexedToken(new SourceRange(next.Begin, end), PredefinedTokenTypes.String, stringValue);
+                            yield return new LexedToken(new SourceRange(end, end), PredefinedTokenTypes.Error, "Unterminated string literal");
                             yield break;
                         }
                         end = nextChar.End;
                         if (!wasPreviousCharacterSlash && nextChar.Character == '"')
                         {
-                            yield return new Token(new SourceRange(next.Begin, nextChar.End), PredefinedTokenTypes.String, stringValue);
+                            yield return new LexedToken(new SourceRange(next.Begin, nextChar.End), PredefinedTokenTypes.String, stringValue);
                             break;
                         }
                         var effectiveCharacter = nextChar.Character.ToString();
@@ -221,7 +221,7 @@ namespace Wide.Lex
                 {
                     if (!Char.IsLetterOrDigit(next.Character))
                     {
-                        yield return new Token(new SourceRange(next.Begin, next.End), PredefinedTokenTypes.Error, "Unlexable character");
+                        yield return new LexedToken(new SourceRange(next.Begin, next.End), PredefinedTokenTypes.Error, "Unlexable character");
                         continue;
                     }
                 }
@@ -233,7 +233,7 @@ namespace Wide.Lex
                     var nextChar = state.GetNext();
                     if (nextChar == null)
                     {
-                        yield return new Token(new SourceRange(startPosition, lastEnd), type, value);
+                        yield return new LexedToken(new SourceRange(startPosition, lastEnd), type, value);
                         yield break;
                     }
                     if (!Char.IsLetterOrDigit(nextChar.Character))
@@ -243,7 +243,7 @@ namespace Wide.Lex
                     value += nextChar.Character;
                     lastEnd = nextChar.End;
                 }
-                yield return new Token(new SourceRange(startPosition, lastEnd), type, value);
+                yield return new LexedToken(new SourceRange(startPosition, lastEnd), type, value);
             }
         }        
     }

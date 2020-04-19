@@ -1,16 +1,17 @@
 ﻿using Wide.Lex;
+using Wide.Parse.AST.Statements;
 
 namespace Wide.Parse.AST.Expressions
 {
     public class DestructorAccess : IExpression
     {
-        public DestructorAccess(ISourceRange location, IExpression obj)
+        public DestructorAccess(IASTLocation location, IExpression obj)
         {
             Location = location;
             Object = obj;
         }
 
-        public ISourceRange Location { get; }
+        public IASTLocation Location { get; }
         public IExpression Object { get; }
     }
 }

@@ -1,14 +1,16 @@
 ﻿namespace Wide.Lex
 {
-    public class SourceRange : ISourceRange
+    public class SourceRange : ITokenLocation
     {
-        public SourceRange(ISourcePosition begin, ISourcePosition end)
+        public SourceRange(SourcePosition begin, SourcePosition end)
         {
-            Begin = begin;
-            End = end;
+            this.Begin = begin;
+            this.End = end;
         }
 
-        public ISourcePosition Begin { get; }
-        public ISourcePosition End { get; }
+        public SourcePosition Begin { get; }
+        public SourcePosition End { get; }
+
+        public string Description => Begin.Description + " - " + End.Description;
     }
 }

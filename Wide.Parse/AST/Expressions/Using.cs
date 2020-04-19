@@ -4,13 +4,13 @@ namespace Wide.Parse.AST.Expressions
 {
     public class Using
     {
-        public Using(ISourceRange location, IExpression expr)
+        public Using(IASTLocation location, IExpression expr)
         {
             Location = location;
             Expression = expr;
         }
 
-        public ISourceRange Location { get; }
+        public IASTLocation Location { get; }
         public IExpression Expression { get; }
     }
 }

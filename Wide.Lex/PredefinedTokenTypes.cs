@@ -93,10 +93,6 @@
         public static readonly ITokenType Delete = new PredefinedTokenType("delete");
         public static readonly ITokenType Default = new PredefinedTokenType("default");
 
-        public static readonly ITokenType Import = new PredefinedTokenType("import");
-        public static readonly ITokenType From = new PredefinedTokenType("from");
-        public static readonly ITokenType Hiding = new PredefinedTokenType("hiding");
-
         public static readonly ITokenType Comment = new PredefinedTokenType("comment", false);
         public static readonly ITokenType Error = new PredefinedTokenType("error", false);
 

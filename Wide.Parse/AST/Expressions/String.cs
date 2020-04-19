@@ -4,13 +4,13 @@ namespace Wide.Parse.AST.Expressions
 {
     public class String : IExpression
     {
-        public String(string value, ISourceRange location)
+        public String(string value, IASTLocation location)
         {
             Value = value;
             Location = location;
         }
 
-        public ISourceRange Location { get; }
+        public IASTLocation Location { get; }
         public string Value { get; }
     }
 }
