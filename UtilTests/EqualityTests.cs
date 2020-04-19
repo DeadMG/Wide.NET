@@ -1,4 +1,6 @@
-﻿namespace Wide.Util.Tests
+﻿using NUnit.Framework;
+
+namespace Wide.Util.Tests
 {
     [TestFixture]
     public class EqualityTests

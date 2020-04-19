@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using NUnit.Framework;
 using Wide.Lex;
 using Wide.Parse.AST.Expressions;
 using Wide.Util;
@@ -29,11 +30,10 @@ namespace Wide.Parse.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(ParserException))]
         public void ThrowsForInvalidTokenType()
         {
             var token = new Token(new SourceRange(new SourcePosition(1, 0, 0), new SourcePosition(1, 1, 1)), new RandomTokenType(), "");
-            new Parser().ParseExpression(new Parser().PutbackRangeFromTokens(Enumerable.Repeat(token, 1)), null);
+            Assert.Throws<ParserException>(() => new Parser().ParseExpression(new Parser().PutbackRangeFromTokens(Enumerable.Repeat(token, 1)), null));
         }
     }
 }

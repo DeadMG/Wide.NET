@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using NUnit.Framework;
 
 namespace Wide.Lex.Tests
 {
@@ -12,7 +13,7 @@ namespace Wide.Lex.Tests
             Assert.That(new Lex.Lexer().FixedTokens.Count != 0);
         }
 
-        [TestCaseSource("PredefinedFixedTokens")]
+        [TestCaseSource(nameof(PredefinedFixedTokens))]
         [Test]
         public void CheckCanLexFixedTokens(ITokenType tokenType)
         {
@@ -26,6 +27,6 @@ namespace Wide.Lex.Tests
             Assert.AreEqual(results[0].Location.End, tokenType.FixedSource.Aggregate(startPosition, (pos, character) => pos.Advance(character, lexer.tabsize)));
         }
 
-        public IEnumerable<ITokenType> PredefinedFixedTokens => new Lex.Lexer().FixedTokens.Values.ToList();
+        public static IEnumerable<ITokenType> PredefinedFixedTokens => new Lex.Lexer().FixedTokens.Values.ToList();
     }
 }
