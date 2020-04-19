@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Wide.Lexical;
+﻿using Wide.Lex;
 
-namespace Wide.Parsing.AST
+namespace Wide.Parse.AST
 {
     public interface IStatement
     {

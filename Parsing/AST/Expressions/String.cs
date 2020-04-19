@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Wide.Lexical;
+﻿using Wide.Lex;
 
-namespace Wide.Parsing.AST.Expressions
+namespace Wide.Parse.AST.Expressions
 {
     public class String : IExpression
     {

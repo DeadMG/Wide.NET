@@ -7,8 +7,8 @@
     <ProjectGuid>{DA20BBD7-7C96-49AC-B3BF-5E273B48996A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Wide.Parsing</RootNamespace>
-    <AssemblyName>Wide.Parsing</AssemblyName>
+    <RootNamespace>Wide.Parse</RootNamespace>
+    <AssemblyName>Wide.Parse</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -77,13 +77,13 @@
     <Compile Include="AST\Statements\Variable.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Lexer\Lexical.csproj">
+    <ProjectReference Include="..\Lexer\Wide.Lex.csproj">
       <Project>{433859bc-1ead-4f02-b81a-4e80a5159e7f}</Project>
-      <Name>Lexical</Name>
+      <Name>Wide.Lex</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Util\Util.csproj">
+    <ProjectReference Include="..\Util\Wide.Util.csproj">
       <Project>{3AA9A56B-6273-41FF-B32D-B9F7AF5A67BF}</Project>
-      <Name>Util</Name>
+      <Name>Wide.Util</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

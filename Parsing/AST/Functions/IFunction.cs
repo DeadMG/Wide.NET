@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Wide.Lexical;
+﻿using System.Collections.Generic;
+using Wide.Lex;
 
-namespace Wide.Parsing.AST.Functions
+namespace Wide.Parse.AST.Functions
 {
     public interface IFunction
     {

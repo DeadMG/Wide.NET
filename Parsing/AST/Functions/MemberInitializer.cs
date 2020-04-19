@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Wide.Parsing.AST.Functions
+﻿namespace Wide.Parse.AST.Functions
 {
     public class MemberInitializer
     {

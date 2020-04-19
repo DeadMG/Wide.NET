@@ -1,19 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lexical", "Lexer\Lexical.csproj", "{433859BC-1EAD-4F02-B81A-4E80A5159E7F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wide.Lex", "Lexer\Wide.Lex.csproj", "{433859BC-1EAD-4F02-B81A-4E80A5159E7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LexicalTest", "LexerTest\LexicalTest.csproj", "{9A210330-B34C-470F-8818-1282973009DB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wide.Lex.Tests", "LexerTest\Wide.Lex.Tests.csproj", "{9A210330-B34C-470F-8818-1282973009DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parsing", "Parsing\Parsing.csproj", "{DA20BBD7-7C96-49AC-B3BF-5E273B48996A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wide.Parse", "Parsing\Wide.Parse.csproj", "{DA20BBD7-7C96-49AC-B3BF-5E273B48996A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParsingTest", "ParsingTest\ParsingTest.csproj", "{861776C2-AE82-4230-8B62-5FCDF6BA1E1C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wide.Parse.Tests", "ParsingTest\Wide.Parse.Tests.csproj", "{861776C2-AE82-4230-8B62-5FCDF6BA1E1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Util", "Util\Util.csproj", "{3AA9A56B-6273-41FF-B32D-B9F7AF5A67BF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wide.Util", "Util\Wide.Util.csproj", "{3AA9A56B-6273-41FF-B32D-B9F7AF5A67BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilTests", "UtilTests\UtilTests.csproj", "{2506576F-6B24-4C26-89B2-9B7D6C0FDF8F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wide.Util.Tests", "UtilTests\Wide.Util.Tests.csproj", "{2506576F-6B24-4C26-89B2-9B7D6C0FDF8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,5 +48,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {88A933AF-41BF-45FD-A902-8475AA6E8778}
 	EndGlobalSection
 EndGlobal

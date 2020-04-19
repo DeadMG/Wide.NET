@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Wide.Lexical;
+﻿using System.Collections.Generic;
+using Wide.Lex;
 
-namespace Wide.Parsing.AST.Expressions
+namespace Wide.Parse.AST.Expressions
 {
     public class FunctionCall : IExpression
     {

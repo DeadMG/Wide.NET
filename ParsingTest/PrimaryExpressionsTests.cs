@@ -1,15 +1,9 @@
-﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Wide.Lexical;
-using Wide.Parsing;
-using Wide.Parsing.AST.Expressions;
+﻿using System.Linq;
+using Wide.Lex;
+using Wide.Parse.AST.Expressions;
 using Wide.Util;
 
-namespace Wide.ParsingTest
+namespace Wide.Parse.Tests
 {
     [TestFixture]
     public class PrimaryExpressionsTests

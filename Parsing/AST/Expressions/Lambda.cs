@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Wide.Lexical;
-using Wide.Parsing.AST.Functions;
-using Wide.Parsing.AST.Statements;
+﻿using System.Collections.Generic;
+using Wide.Lex;
+using Wide.Parse.AST.Functions;
+using Wide.Parse.AST.Statements;
 
-namespace Wide.Parsing.AST.Expressions
+namespace Wide.Parse.AST.Expressions
 {
     public class Lambda : IExpression, IFunction
     {

@@ -7,8 +7,8 @@
     <ProjectGuid>{9A210330-B34C-470F-8818-1282973009DB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Wide.LexerTest</RootNamespace>
-    <AssemblyName>Wide.LexerTest</AssemblyName>
+    <RootNamespace>Wide.Lex.Tests</RootNamespace>
+    <AssemblyName>Wide.Lex.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,10 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -49,13 +45,13 @@
     <Compile Include="VariableLengthTokenTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Lexer\Lexical.csproj">
+    <ProjectReference Include="..\Lexer\Wide.Lex.csproj">
       <Project>{433859bc-1ead-4f02-b81a-4e80a5159e7f}</Project>
-      <Name>Lexical</Name>
+      <Name>Wide.Lex</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Util\Util.csproj">
+    <ProjectReference Include="..\Util\Wide.Util.csproj">
       <Project>{3AA9A56B-6273-41FF-B32D-B9F7AF5A67BF}</Project>
-      <Name>Util</Name>
+      <Name>Wide.Util</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

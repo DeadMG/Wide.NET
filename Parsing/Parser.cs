@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Wide.Lexical;
-using Wide.Parsing.AST;
-using Wide.Parsing.AST.Expressions;
+using Wide.Lex;
+using Wide.Parse.AST;
+using Wide.Parse.AST.Expressions;
 using Wide.Util;
+using String = Wide.Parse.AST.Expressions.String;
 
-namespace Wide.Parsing
+namespace Wide.Parse
 {
     public class Parser
     {
         public Dictionary<ITokenType, Func<Parser, Import, Token, IExpression>> PrimaryExpressions = new Dictionary<ITokenType, Func<Parser, Import, Token, IExpression>>
         {
             { PredefinedTokenTypes.This, (parser, import, token) => new This(token.Location) },
-            { PredefinedTokenTypes.String, (parser, import, token) => new AST.Expressions.String(token.Value, token.Location) },
+            { PredefinedTokenTypes.String, (parser, import, token) => new String(token.Value, token.Location) },
             { PredefinedTokenTypes.Integer, (parser, import, token) => new Integer(token.Location, token.Value) },
             { PredefinedTokenTypes.True, (parser, import, token) => new True(token.Location) },
             { PredefinedTokenTypes.False, (parser, import, token) => new False(token.Location) }

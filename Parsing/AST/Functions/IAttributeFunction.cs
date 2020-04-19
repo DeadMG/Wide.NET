@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace Wide.Parsing.AST.Functions
+namespace Wide.Parse.AST.Functions
 {
     public interface IAttributeFunction : IFunction
     {
